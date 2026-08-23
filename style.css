@@ -1,0 +1,1083 @@
+/* ===== متغیرهای سراسری ===== */
+:root {
+    --primary: #6c5ce7;
+    --primary-dark: #5344c9;
+    --accent: #00cec9;
+    --danger: #e74c3c;
+    --success: #2ecc71;
+    --bg: #0f0f1a;
+    --card-bg: rgba(255, 255, 255, 0.06);
+    --text: #f0f0f5;
+    --text-muted: #a0a0b8;
+    --border: rgba(255, 255, 255, 0.12);
+    --radius: 18px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ریست ظاهر بومی فرم‌ها در همه مرورگرها و سیستم‌عامل‌ها */
+button,
+input {
+    font-family: inherit;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+body {
+    font-family: "Vazirmatn", "Segoe UI", Tahoma, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* ===== پس‌زمینه متحرک ===== */
+.bg-shapes {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    filter: blur(60px);
+}
+
+.bg-shapes span {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    opacity: 0.45;
+    animation: float 14s ease-in-out infinite;
+}
+
+.bg-shapes span:nth-child(1) { background: var(--primary); top: -80px; right: -80px; }
+.bg-shapes span:nth-child(2) { background: var(--accent); bottom: -100px; left: -80px; animation-delay: -3s; }
+.bg-shapes span:nth-child(3) { background: #fd79a8; top: 40%; left: 15%; animation-delay: -6s; }
+.bg-shapes span:nth-child(4) { background: #0984e3; top: 10%; left: 55%; animation-delay: -9s; }
+.bg-shapes span:nth-child(5) { background: #6c5ce7; bottom: 15%; right: 20%; animation-delay: -12s; }
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%      { transform: translate(40px, -50px) scale(1.1); }
+    66%      { transform: translate(-30px, 35px) scale(0.95); }
+}
+
+/* ===== کارت اصلی ===== */
+.container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 440px;
+    padding: 24px;
+    /* پشتیبانی از نمایشگرهای ناچ‌دار (iPhone و غیره) */
+    padding: calc(24px + env(safe-area-inset-top))
+             calc(24px + env(safe-area-inset-right))
+             calc(24px + env(safe-area-inset-bottom))
+             calc(24px + env(safe-area-inset-left));
+}
+
+.card {
+    /* فاصله بالای کارت برای اینکه آدمک کامل دیده شود و از کادر صفحه بیرون نزnd */
+    margin-top: 96px;
+    position: relative;
+    background: var(--card-bg);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+    animation: cardIn 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(30px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ===== تب‌ها ===== */
+.tabs {
+    position: relative;
+    display: flex;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    padding: 5px;
+    margin-bottom: 28px;
+}
+
+.tab {
+    flex: 1;
+    z-index: 1;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 11px 0;
+    cursor: pointer;
+    transition: color 0.3s;
+    border-radius: 10px;
+}
+
+.tab.active { color: #fff; }
+
+.tab-slider {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: calc(50% - 5px);
+    height: calc(100% - 10px);
+    background: linear-gradient(135deg, var(--primary), #8e7cf3);
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(108, 92, 231, 0.5);
+    transition: transform 0.35s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.tabs.show-signup .tab-slider { transform: translateX(-100%); }
+
+/* ===== فرم‌ها ===== */
+.form {
+    display: none;
+    animation: formIn 0.45s ease;
+}
+
+.form.active { display: block; }
+
+@keyframes formIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.form h2 {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 13.5px;
+    line-height: 1.8;
+    margin-bottom: 26px;
+}
+
+label {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 500;
+    margin-bottom: 7px;
+}
+
+.input-box {
+    position: relative;
+    margin-bottom: 4px;
+}
+
+.input-box svg {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    width: 19px;
+    height: 19px;
+    fill: none;
+    stroke: var(--text-muted);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.3s;
+    pointer-events: none;
+}
+
+.input-box input {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1.5px solid transparent;
+    border-radius: 12px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14.5px;
+    padding: 13px 46px 13px 44px;
+    outline: none;
+    transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
+}
+
+.input-box input::placeholder { color: rgba(255, 255, 255, 0.35); }
+
+.input-box input:focus {
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.09);
+    box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.18);
+}
+
+/* focus-within: سازگار با همه مرورگرهای مدرن (جایگزین :has که در فایرفاکس قدیمی نیست) */
+.input-box:focus-within svg { stroke: var(--accent); }
+
+.input-box.invalid input {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.15);
+}
+
+.input-box.valid input {
+    border-color: var(--success);
+}
+
+.toggle-pass {
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    transition: background 0.2s;
+}
+
+.toggle-pass:hover { background: rgba(255, 255, 255, 0.1); }
+
+.toggle-pass svg {
+    position: static;
+    transform: none;
+    width: 18px;
+    height: 18px;
+    pointer-events: auto;
+}
+
+/* پیام خطا و راهنما */
+.error {
+    display: block;
+    min-height: 18px;
+    color: #ff7675;
+    font-size: 12px;
+    margin-bottom: 8px;
+    transition: opacity 0.3s;
+}
+
+.hint {
+    display: block;
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+/* نوار قدرت رمز عبور */
+.strength-bar {
+    height: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.strength-bar i {
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--danger), #fdcb6e, var(--success));
+    transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ===== دکمه ارسال ===== */
+.btn-submit {
+    width: 100%;
+    margin-top: 14px;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+    box-shadow: 0 10px 25px rgba(108, 92, 231, 0.4);
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px rgba(108, 92, 231, 0.55);
+}
+
+.btn-submit:active { transform: translateY(0); }
+
+.btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.switch-text {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13.5px;
+    margin-top: 22px;
+}
+
+.switch-text a {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.switch-text a:hover { text-decoration: underline; }
+
+/* ===== پیام سراسری ===== */
+.message {
+    display: none;
+    border-radius: 12px;
+    padding: 11px 15px;
+    font-size: 13.5px;
+    margin-bottom: 18px;
+    animation: formIn 0.3s ease;
+}
+
+.message.success {
+    display: block;
+    background: rgba(46, 204, 113, 0.14);
+    border: 1px solid rgba(46, 204, 113, 0.4);
+    color: #7bedaa;
+}
+
+.message.error-msg {
+    display: block;
+    background: rgba(231, 76, 60, 0.14);
+    border: 1px solid rgba(231, 76, 60, 0.4);
+    color: #ff9d96;
+}
+
+/* ===== پنل خوش‌آمدگویی ===== */
+.welcome-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    background: rgba(10, 10, 20, 0.75);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.welcome-overlay.visible { display: flex; }
+
+.welcome-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(22px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--radius);
+    padding: 44px 38px;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    animation: cardIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.welcome-card h2 { font-size: 26px; margin-bottom: 14px; }
+.welcome-card p { color: var(--text-muted); line-height: 1.9; margin-bottom: 24px; }
+.welcome-card strong { color: var(--accent); }
+
+/* ===== آدمک نگهبان رمز عبور ===== */
+
+/* جلوگیری از انتخاب متن در عناصر تعاملی/تزئینی (موبایل و دسکتاپ) */
+.buddy,
+.tabs,
+.tab,
+.btn-submit,
+.toggle-pass {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.buddy {
+    position: absolute;
+    top: -88px;
+    right: 50%;
+    width: 110px;
+    transform: translateX(50%);
+    z-index: 5;
+    pointer-events: none;
+    filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.35));
+    animation: buddyFloat 3.6s ease-in-out infinite;
+}
+
+@keyframes buddyFloat {
+    0%, 100% { transform: translateX(50%) translateY(0); }
+    50%      { transform: translateX(50%) translateY(-4px); }
+}
+
+.buddy svg {
+    display: block;
+    width: 100%;
+    overflow: visible;
+}
+
+.buddy .ear        { fill: #5746c8; }
+.buddy .body-main  { fill: url(#gradBody); }
+.buddy .body-belly { fill: #8d7df6; opacity: 0.55; }
+.buddy .hand       { fill: #8d7df6; }
+.buddy .eye-white  { fill: #fff; }
+.buddy .pupil      { fill: #332a66; transition: transform 0.08s linear; }
+
+.buddy .eyes-closed path {
+    stroke: #332a66;
+    stroke-width: 4.5;
+    fill: none;
+    stroke-linecap: round;
+}
+
+.eyes-open,
+.eyes-closed { transition: opacity 0.18s ease; }
+
+.eyes-closed { opacity: 0; }
+
+.eyes-open {
+    transform-box: view-box;
+    transform-origin: 70px 65px;
+    animation: blink 4.6s infinite;
+}
+
+@keyframes blink {
+    0%, 91%, 97%, 100% { transform: scaleY(1); }
+    94%                { transform: scaleY(0.08); }
+}
+
+.arm {
+    transform-box: view-box;
+    transform-origin: 28.5px 84px;
+    transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.arm-right { transform-origin: 111.5px 84px; }
+
+#buddy.covering .arm-left  { transform: rotate(-118deg); }
+#buddy.covering .arm-right { transform: rotate(118deg); }
+
+#buddy.covering .eyes-open   { opacity: 0; animation: none; }
+#buddy.covering .eyes-closed { opacity: 1; }
+
+/* ===== ریسپانسیو ===== */
+@media (max-width: 480px) {
+    .card { padding: 28px 20px; margin-top: 92px; }
+    .buddy { width: 100px; top: -82px; }
+
+    /* فونت ۱۶ پیکسل مانع زوم خودکار iOS Safari هنگام فوکوس می‌شود */
+    .input-box input {
+        font-size: 16px;
+    }
+}
+
+/* ===== احترام به تنظیمات «کاهش حرکت» سیستم‌عامل ===== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ============================================================
+   حالت داشبورد: بدنه به چیدمان عادی برمی‌گردد تا اخبار اسکرول شوند
+   ============================================================ */
+body.dash-mode {
+    display: block;
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+/* ============================================================
+   داشبورد اخبار جهان (بعد از ورود موفق)
+   ============================================================ */
+.news-app {
+    display: none;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+    animation: formIn 0.5s ease;
+}
+
+.news-app.visible { display: block; }
+
+.news-header {
+    margin-bottom: 22px;
+}
+
+.news-header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.news-header h1 {
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.user-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 99px;
+    padding: 6px 14px;
+    font-size: 13.5px;
+    color: var(--text-muted);
+    max-width: 220px;
+}
+
+.user-chip span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-chip button {
+    background: rgba(231, 76, 60, 0.15);
+    border: none;
+    color: #ff9d96;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 13px;
+    display: grid;
+    place-items: center;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.user-chip button:hover {
+    background: rgba(231, 76, 60, 0.3);
+    transform: rotate(90deg);
+}
+
+/* فیلتر دسته‌ها */
+.news-filters {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: none; /* Firefox */
+}
+
+.news-filters::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+.filter-btn {
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    border-radius: 99px;
+    padding: 8px 16px;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.25s;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.filter-btn:hover { color: var(--text); background: rgba(255, 255, 255, 0.1); }
+
+.filter-btn.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 6px 18px rgba(108, 92, 231, 0.4);
+}
+
+/* لودر */
+.loader {
+    display: none;
+    justify-content: center;
+    gap: 10px;
+    padding: 70px 0;
+}
+
+.loader.visible { display: flex; }
+
+.loader span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--primary);
+    animation: bounce 0.9s infinite ease-in-out;
+}
+
+.loader span:nth-child(2) { animation-delay: 0.15s; }
+.loader span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes bounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40%           { transform: scale(1);   opacity: 1; }
+}
+
+/* خطا */
+.news-error {
+    background: rgba(231, 76, 60, 0.12);
+    border: 1px solid rgba(231, 76, 60, 0.35);
+    color: #ff9d96;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.news-error.hidden { display: none; }
+
+.news-error button {
+    background: var(--danger);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 14px;
+    margin-right: 10px;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.news-error button:hover { filter: brightness(1.15); }
+
+/* لیست اخبار */
+.news-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+}
+
+.news-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+    animation: cardIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.news-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(108, 92, 231, 0.55);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+}
+
+.news-card .n-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11.5px;
+    color: var(--text-muted);
+}
+
+.n-source {
+    background: rgba(108, 92, 231, 0.2);
+    color: #b9aefc;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-weight: 600;
+}
+
+.news-card h3 {
+    font-size: 15px;
+    line-height: 1.75;
+    font-weight: 700;
+}
+
+.news-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.85;
+    flex-grow: 1;
+    /* حداکثر ۳ خط نمایش داده شود */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.news-card a {
+    align-self: flex-start;
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.news-card a:hover { text-decoration: underline; }
+
+/* حالت خالی */
+.news-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-muted);
+    padding: 50px 20px;
+    font-size: 15px;
+    line-height: 2;
+}
+
+/* ============================================================
+   پنل مدیریت ادمین 🛡️
+   ============================================================ */
+.admin-app {
+    max-width: 1000px;
+}
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+}
+
+.stat-card strong {
+    display: block;
+    font-size: 26px;
+    color: #a29bfe;
+    margin-bottom: 4px;
+}
+
+.stat-card span {
+    font-size: 12.5px;
+    color: var(--text-muted);
+}
+
+.admin-tools {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 18px 0;
+}
+
+#admin-search {
+    flex: 1;
+    min-width: 200px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 11px 14px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13.5px;
+    outline: none;
+}
+
+#admin-search:focus {
+    border-color: #6c5ce7;
+}
+
+.tool-btn {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 11px 16px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.tool-btn:hover {
+    background: rgba(255, 255, 255, 0.13);
+    transform: translateY(-2px);
+}
+
+.tool-btn.danger:hover {
+    background: rgba(231, 76, 60, 0.25);
+    border-color: #e74c3c;
+}
+
+.table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    min-width: 560px;
+}
+
+.users-table th,
+.users-table td {
+    padding: 12px 14px;
+    text-align: right;
+    border-bottom: 1px solid var(--border);
+}
+
+.users-table th {
+    color: #a29bfe;
+    font-weight: 600;
+    background: rgba(108, 92, 231, 0.08);
+}
+
+.users-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.users-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.table-empty {
+    text-align: center !important;
+    color: var(--text-muted);
+    padding: 30px !important;
+}
+
+.actions {
+    white-space: nowrap;
+}
+
+.row-btn {
+    background: transparent;
+    border: none;
+    font-size: 17px;
+    cursor: pointer;
+    padding: 5px 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.row-btn.edit:hover {
+    background: rgba(52, 152, 219, 0.2);
+}
+
+.row-btn.del:hover {
+    background: rgba(231, 76, 60, 0.2);
+    transform: scale(1.15);
+}
+
+/* ---------- مودال‌ها ---------- */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 18, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 300;
+    padding: 20px;
+}
+
+.modal-card {
+    width: min(420px, 100%);
+    background: var(--card-bg, #171727);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 26px 24px;
+    animation: popIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-card h3 {
+    margin-bottom: 16px;
+}
+
+.modal-card label {
+    display: block;
+    margin: 12px 0 6px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.modal-card input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 11px 14px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13.5px;
+    outline: none;
+}
+
+.modal-card input:focus {
+    border-color: #6c5ce7;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.btn-cancel {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    color: var(--text);
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* ---------- مودال خبر کامل 📖 ---------- */
+.modal-news-card {
+    position: relative;
+    width: min(640px, 100%);
+    max-height: 84vh;
+    overflow-y: auto;
+    background: #171727;
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 30px 28px;
+    animation: popIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-news-card h2 {
+    line-height: 1.9;
+    margin-bottom: 10px;
+    padding-left: 30px;
+}
+
+.n-meta-line {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+}
+
+#nm-body {
+    font-size: 15px;
+    line-height: 2.2;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-bottom: 20px;
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    background: rgba(231, 76, 60, 0.3);
+}
+
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.88) translateY(14px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ---------- بهبود کارت خبر ---------- */
+.news-card {
+    cursor: pointer;
+}
+
+.n-desc {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.n-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.read-more {
+    font-size: 13px;
+    font-weight: 700;
+    color: #a29bfe;
+}
+
+.admin-hint {
+    margin-top: 16px;
+    font-size: 11.5px;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.admin-hint code {
+    background: rgba(162, 155, 254, 0.15);
+    color: #a29bfe;
+    padding: 1px 7px;
+    border-radius: 6px;
+    font-family: inherit;
+}
+
+@media (max-width: 480px) {
+    .stats-row { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .stat-card strong { font-size: 19px; }
+    .stat-card span { font-size: 10.5px; }
+    .admin-tools { gap: 7px; }
+    .tool-btn { padding: 9px 12px; font-size: 12px; }
+    .modal-news-card { padding: 24px 18px; }
+}
+
+@media (max-width: 480px) {
+    .news-list { grid-template-columns: 1fr; }
+    .news-header h1 { font-size: 17px; }
+    .user-chip { max-width: 160px; font-size: 12.5px; }
+    .filter-btn { padding: 7px 13px; font-size: 12.5px; }
+}
